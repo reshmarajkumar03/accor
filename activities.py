@@ -1,3 +1,4 @@
+import streamlit as st
 import anthropic
 
 client = anthropic.Anthropic(api_key=st.secrets["ANTHROPIC_API_KEY"])
@@ -8,9 +9,6 @@ client = anthropic.Anthropic(api_key=st.secrets["ANTHROPIC_API_KEY"])
 # =========================
 
 def clean_activity_output(text):
-    """
-    Removes unwanted follow-up questions or extra trailing assistant text.
-    """
     lines = text.strip().split("\n")
     cleaned_lines = []
 
@@ -33,9 +31,6 @@ def clean_activity_output(text):
 
 
 def get_things_to_do(hotel_name, address, city, trip_purpose=None, party_type=None):
-    """
-    Returns 5 nearby activity suggestions for a selected hotel.
-    """
     context_parts = []
     if trip_purpose:
         context_parts.append(f"trip purpose: {trip_purpose}")

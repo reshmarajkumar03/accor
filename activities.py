@@ -1,6 +1,6 @@
 import anthropic
 
-client = anthropic.Anthropic(api_key="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")
+client = anthropic.Anthropic(api_key=st.secrets["ANTHROPIC_API_KEY"])
 
 # =========================
 # AI AGENT: THINGS TO DO

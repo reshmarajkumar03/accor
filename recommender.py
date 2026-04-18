@@ -9,9 +9,9 @@ import numpy as np
 # =========================
 # 1. LOAD DATA
 # =========================
-user_requests = pd.read_csv("/content/drive/MyDrive/Colab Notebooks/Accor Project/user_requests.csv")
-bookings = pd.read_csv("/content/drive/MyDrive/Colab Notebooks/Accor Project/user_bookings.csv")
-hotels = pd.read_csv("/content/drive/MyDrive/Colab Notebooks/Accor Project/hotels.csv")
+user_requests = pd.read_csv("user_requests.csv")
+bookings = pd.read_csv("user_bookings.csv")
+hotels = pd.read_csv("hotels.csv")
 
 # =========================
 # 2. CLEAN DATA

@@ -1,4 +1,5 @@
 import streamlit as st
+import os
 from recommender import (
     generate_hotel_recommendations,
     get_available_cities,
@@ -8,8 +9,19 @@ from activities import get_things_to_do
 
 st.set_page_config(page_title="Accor Travel Assistant", layout="wide")
 
-st.title("Accor Travel Assistant")
-st.write("Find hotel recommendations and nearby things to do.")
+# =========================
+# HEADER (LOGO + TITLE)
+# =========================
+logo_path = os.path.join(os.path.dirname(__file__), "Accor_logo.png")
+
+col_logo, col_title = st.columns([1, 6])
+
+with col_logo:
+    st.image(logo_path, width=120)
+
+with col_title:
+    st.title("Accor Travel Assistant")
+    st.write("Find hotel recommendations and nearby things to do.")
 
 # -------------------------
 # Session state
@@ -26,9 +38,9 @@ if "recommendation_message" not in st.session_state:
 if "activities_result" not in st.session_state:
     st.session_state.activities_result = None
 
-# -------------------------
-# Step 1: Hotel recommendations
-# -------------------------
+# =========================
+# STEP 1: HOTEL RECOMMENDATIONS
+# =========================
 st.header("1. Get hotel recommendations")
 
 col1, col2, col3 = st.columns(3)
@@ -73,7 +85,9 @@ if st.button("Get hotel recommendations"):
         st.session_state.activities_result = None
         st.error(result["message"])
 
-# Show recommendations
+# -------------------------
+# SHOW HOTEL RESULTS
+# -------------------------
 if st.session_state.display_df is not None and not st.session_state.display_df.empty:
     st.success(st.session_state.recommendation_message)
 
@@ -82,16 +96,16 @@ if st.session_state.display_df is not None and not st.session_state.display_df.e
     for i, row in st.session_state.display_df.iterrows():
         with st.container():
             st.markdown(f"### Option {i+1}: {row['Hotel']}")
-            st.write(f"**Location:** {row['City']}")
-            st.write(f"**Tier:** {row['Tier']} | **Brand:** {row['Brand']}")
-            st.write(f"**Price:** ${row['Min Price']} - ${row['Max Price']}")
-            st.write(f"**Match Score:** {row['Match %']}%")
-            st.write(f"**Why Recommended:** {row['Why Recommended']}")
+            st.write(f"📍 **Location:** {row['City']}")
+            st.write(f"🏨 **Tier:** {row['Tier']} | **Brand:** {row['Brand']}")
+            st.write(f"💰 **Price:** ${row['Min Price']} - ${row['Max Price']}")
+            st.write(f"⭐ **Match Score:** {row['Match %']}%")
+            st.write(f"🤖 **Why Recommended:** {row['Why Recommended']}")
             st.divider()
 
-# -------------------------
-# Step 2: Things to do
-# -------------------------
+# =========================
+# STEP 2: THINGS TO DO
+# =========================
 if st.session_state.hotel_results is not None and not st.session_state.hotel_results.empty:
     st.header("2. Get nearby activities")
 
@@ -139,15 +153,17 @@ if st.session_state.hotel_results is not None and not st.session_state.hotel_res
             "activities": activities
         }
 
-# Show activities
+# -------------------------
+# SHOW ACTIVITIES
+# -------------------------
 if st.session_state.activities_result is not None:
     data = st.session_state.activities_result
 
     st.subheader("Things to do near your hotel")
-    st.write(f"**Selected Hotel:** {data['hotel_name']}")
-    st.write(f"**Location:** {data['address']}, {data['city']}")
-    st.write(f"**Trip Purpose:** {data['trip_purpose']}")
-    st.write(f"**Traveling With:** {data['party_type']}")
+    st.write(f"🏨 **Selected Hotel:** {data['hotel_name']}")
+    st.write(f"📍 **Location:** {data['address']}, {data['city']}")
+    st.write(f"🎯 **Trip Purpose:** {data['trip_purpose']}")
+    st.write(f"👥 **Traveling With:** {data['party_type']}")
 
     st.markdown("### 5 things to do nearby")
     st.text(data["activities"])

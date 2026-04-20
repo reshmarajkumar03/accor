@@ -1,11 +1,10 @@
 import streamlit as st
-from google import genai
+import anthropic
 
-client = genai.Client(api_key=st.secrets["GEMINI_API_KEY"])
+client = anthropic.Anthropic(api_key=st.secrets["ANTHROPIC_API_KEY"])
 
 # =========================
 # AI AGENT: THINGS TO DO
-# APP-READY VERSION
 # =========================
 
 def clean_activity_output(text):
@@ -72,10 +71,12 @@ def get_things_to_do(hotel_name, address, city, trip_purpose=None, party_type=No
         f"Continue the same structure through number 5 only."
     )
 
-    response = client.models.generate_content(
-        model="gemini-3-flash-preview",
-        contents=prompt,
+    response = client.messages.create(
+        model="claude-haiku-4-5-20251001",
+        max_tokens=1000,
+        temperature=0,
+        messages=[{"role": "user", "content": prompt}]
     )
 
-    raw_text = response.text if response.text else ""
+    raw_text = response.content[0].text
     return clean_activity_output(raw_text)
